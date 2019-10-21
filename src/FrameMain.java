@@ -35,6 +35,7 @@ public class FrameMain extends JFrame {
 	private JFileChooser fc;
 	private DefaultListModel<String> raffleListModel, winnerListModel;
 	private JLabel lblCongrats;
+	private ButtonIcon btnImport, btnDraw;
 
 	/**
 	 * Launch the application.
@@ -105,7 +106,7 @@ public class FrameMain extends JFrame {
 		scrollPaneWinners.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		contentPane.add(scrollPaneWinners);
 		
-		ButtonIcon btnImport = new ButtonIcon("button_import", "");
+		btnImport = new ButtonIcon("button_import", "");
 		btnImport.setBounds(10, 18, 100, 35);
 		btnImport.setBorderPainted(false);
 		btnImport.setFocusPainted(false);
@@ -124,8 +125,8 @@ public class FrameMain extends JFrame {
 		lblRecentWinners.setBounds(691, 36, 160, 13);
 		contentPane.add(lblRecentWinners);
 		
-		ButtonIcon btnDraw = new ButtonIcon("button_draw", "");
-		btnDraw.setBounds(455, 319, 100, 35);
+		btnDraw = new ButtonIcon("button_draw", "");
+		btnDraw.setBounds(455, 257, 100, 35);
 		btnDraw.setBorderPainted(false);
 		btnDraw.setFocusPainted(false);
 		btnDraw.setContentAreaFilled(false);
@@ -141,7 +142,7 @@ public class FrameMain extends JFrame {
 		lblCongrats = new JLabel("Hello World");
 		lblCongrats.setForeground(new Color(255, 255, 255));
 		lblCongrats.setOpaque(true);
-		lblCongrats.setBackground(Color.decode("#6599FF"));
+		lblCongrats.setBackground(Color.decode("#FFB85F"));
 		lblCongrats.setFont(new Font("Segoe UI", Font.PLAIN, 25));
 		lblCongrats.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCongrats.setBounds(315, 166, 366, 80);
@@ -173,7 +174,14 @@ public class FrameMain extends JFrame {
 		}
 	}
 	
+	private void setButtonState(boolean state) {
+		btnImport.setEnabled(state);
+		btnDraw.setEnabled(state);
+	}
+	
 	private void drawWinner() {
+		setButtonState(false);
+		
 		int size = raffleListModel.getSize();
 		if (size > 1) {
 			Thread thread = new Thread(new Runnable() {
@@ -195,6 +203,8 @@ public class FrameMain extends JFrame {
 						lblCongrats.setText(winner);
 						
 						raffleListModel.remove(index);
+						
+						setButtonState(true);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
